@@ -25,20 +25,35 @@ func main() {
 	db.AutoMigrate(&book.Book{})
 	// crud
 
-	book := book.Book{}
-	book.Title = "PKI"
-	book.Price = 70000
-	book.Publisher = "Partai Komunis"
-	book.Rating = 5.5
-	book.Description = "PKI HARAM"
+	// book := book.Book{}
+	// book.Title = "PKI"
+	// book.Price = 70000
+	// book.Publisher = "Partai Komunis"
+	// book.Rating = 5.5
+	// book.Description = "PKI HARAM"
 
-	err = db.Create(&book).Error
+	// err = db.Create(&book).Error
+	// if err != nil {
+	// 	fmt.Println("==========================")
+	// 	fmt.Println("Error creating book record")
+	// 	fmt.Println("==========================")
+	// }
+
+
+	var fieldBook []book.Book
+
+	err = db.Debug().Where("Title LIKE ?", "%lan%").Find(&fieldBook).Error
 	if err != nil {
 		fmt.Println("==========================")
 		fmt.Println("Error creating book record")
 		fmt.Println("==========================")
 	}
 
+	for _, i := range fieldBook {
+		fmt.Println("Title :", i.Title)
+		fmt.Println("Book object %+v", i)
+	}
+	
 	router := gin.Default()
 
 	v1 := router.Group("/v1")
