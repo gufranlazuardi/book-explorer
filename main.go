@@ -23,59 +23,25 @@ func main() {
 	fmt.Println("Database connection succeed")
 
 	db.AutoMigrate(&book.Book{})
-	// crud
 
-	// book := book.Book{}
-	// book.Title = "PKI"
-	// book.Price = 70000
-	// book.Publisher = "Partai Komunis"
-	// book.Rating = 5.5
-	// book.Description = "PKI HARAM"
+	bookRepository := book.NewRepository(db)
 
-	// err = db.Create(&book).Error
-	// if err != nil {
-	// 	fmt.Println("==========================")
-	// 	fmt.Println("Error creating book record")
-	// 	fmt.Println("==========================")
-	// }
-
-	var fieldBook book.Book
-
-	// err = db.Debug().Where("Title = ?", "PKI").First(&fieldBook).Error
-	// if err != nil {
-	// 	fmt.Println("==========================")
-	// 	fmt.Println("Error catching title:", err)
-	// 	fmt.Println("==========================")
-	// }
-
-	// // Update the title
-	// fieldBook.Title = "NEW PKI IS BORN"
-
-	// // Save the updated record
-	// err = db.Save(&fieldBook).Error
-	// if err != nil {
-	// 	fmt.Println("==========================")
-	// 	fmt.Println("Error updating title:", err)
-	// 	fmt.Println("==========================")
-	// } else {
-	// 	fmt.Println("Title successfully updated to:", fieldBook.Title)
-	// }
-
-
-	err = db.Debug().Where("id = ?", 1).First(&fieldBook).Error
-	if err != nil {
-		fmt.Println("==========================")
-		fmt.Println("Error updating title:", fieldBook)
-		fmt.Println("==========================")
+	book := book.Book{
+		Title: "Buku Napi",
+		Rating: 2.3,
+		Description: "Kocak",
+		Price: 100000,
+		Publisher: "Elgangga",
 	}
 
-	err = db.Debug().Delete(&fieldBook).Error
+	newBook, err := bookRepository.Create(book)
+
 	if err != nil {
-		fmt.Println("==========================")
-		fmt.Println("Success deleted ID :", fieldBook)
-		fmt.Println("==========================")
+		fmt.Println("Failed to created book", newBook)
 	}
 
+	fmt.Print("Buku berhasil di buat : ", newBook.Title)
+		
 	router := gin.Default()
 
 	v1 := router.Group("/v1")
