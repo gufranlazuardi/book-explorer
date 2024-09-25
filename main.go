@@ -41,24 +41,39 @@ func main() {
 
 	var fieldBook book.Book
 
-	err = db.Debug().Where("Title = ?", "PKI").First(&fieldBook).Error
+	// err = db.Debug().Where("Title = ?", "PKI").First(&fieldBook).Error
+	// if err != nil {
+	// 	fmt.Println("==========================")
+	// 	fmt.Println("Error catching title:", err)
+	// 	fmt.Println("==========================")
+	// }
+
+	// // Update the title
+	// fieldBook.Title = "NEW PKI IS BORN"
+
+	// // Save the updated record
+	// err = db.Save(&fieldBook).Error
+	// if err != nil {
+	// 	fmt.Println("==========================")
+	// 	fmt.Println("Error updating title:", err)
+	// 	fmt.Println("==========================")
+	// } else {
+	// 	fmt.Println("Title successfully updated to:", fieldBook.Title)
+	// }
+
+
+	err = db.Debug().Where("id = ?", 1).First(&fieldBook).Error
 	if err != nil {
 		fmt.Println("==========================")
-		fmt.Println("Error catching title:", err)
+		fmt.Println("Error updating title:", fieldBook)
 		fmt.Println("==========================")
 	}
 
-	// Update the title
-	fieldBook.Title = "NEW PKI IS BORN"
-
-	// Save the updated record
-	err = db.Save(&fieldBook).Error
+	err = db.Debug().Delete(&fieldBook).Error
 	if err != nil {
 		fmt.Println("==========================")
-		fmt.Println("Error updating title:", err)
+		fmt.Println("Success deleted ID :", fieldBook)
 		fmt.Println("==========================")
-	} else {
-		fmt.Println("Title successfully updated to:", fieldBook.Title)
 	}
 
 	router := gin.Default()
