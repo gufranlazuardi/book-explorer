@@ -9,5 +9,3 @@ type BookInput struct {
 	Price    json.Number `json:"price" binding:"required,number"`
 	SubTitle string      `json:"sub_title"`
 }
-
-

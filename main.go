@@ -39,21 +39,28 @@ func main() {
 	// 	fmt.Println("==========================")
 	// }
 
+	var fieldBook book.Book
 
-	var fieldBook []book.Book
-
-	err = db.Debug().Where("Title LIKE ?", "%lan%").Find(&fieldBook).Error
+	err = db.Debug().Where("Title = ?", "PKI").First(&fieldBook).Error
 	if err != nil {
 		fmt.Println("==========================")
-		fmt.Println("Error creating book record")
+		fmt.Println("Error catching title:", err)
 		fmt.Println("==========================")
 	}
 
-	for _, i := range fieldBook {
-		fmt.Println("Title :", i.Title)
-		fmt.Println("Book object %+v", i)
+	// Update the title
+	fieldBook.Title = "NEW PKI IS BORN"
+
+	// Save the updated record
+	err = db.Save(&fieldBook).Error
+	if err != nil {
+		fmt.Println("==========================")
+		fmt.Println("Error updating title:", err)
+		fmt.Println("==========================")
+	} else {
+		fmt.Println("Title successfully updated to:", fieldBook.Title)
 	}
-	
+
 	router := gin.Default()
 
 	v1 := router.Group("/v1")
@@ -68,7 +75,3 @@ func main() {
 
 	router.Run()
 }
-
-
-
-

@@ -10,7 +10,6 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-
 func RootHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"name":  "Gufran Lazuardi",
@@ -31,7 +30,6 @@ func BooksHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"id": id, "title": title})
 }
-
 
 func PriceHandler(c *gin.Context) {
 	price := c.Query("price")
