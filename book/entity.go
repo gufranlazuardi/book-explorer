@@ -7,7 +7,7 @@ type Book struct {
 	Title string
 	Description string
 	Price int
-	Rating int
+	Rating float32
 	Publisher string
 	CreatedAt time.Time
 	UpdatedAt time.Time

@@ -23,6 +23,21 @@ func main() {
 	fmt.Println("Database connection succeed")
 
 	db.AutoMigrate(&book.Book{})
+	// crud
+
+	book := book.Book{}
+	book.Title = "PKI"
+	book.Price = 70000
+	book.Publisher = "Partai Komunis"
+	book.Rating = 5.5
+	book.Description = "PKI HARAM"
+
+	err = db.Create(&book).Error
+	if err != nil {
+		fmt.Println("==========================")
+		fmt.Println("Error creating book record")
+		fmt.Println("==========================")
+	}
 
 	router := gin.Default()
 
