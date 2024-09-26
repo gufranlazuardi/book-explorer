@@ -25,22 +25,14 @@ func main() {
 	db.AutoMigrate(&book.Book{})
 
 	bookRepository := book.NewRepository(db)
+	bookService := book.NewService(bookRepository)
 
-	book := book.Book{
-		Title: "Buku Napi",
-		Rating: 2.3,
-		Description: "Kocak",
-		Price: 100000,
-		Publisher: "Elgangga",
+	bookRequest := book.BookRequest{
+		Title: "Buku Keren",
+		Price: "200000",
 	}
 
-	newBook, err := bookRepository.Create(book)
-
-	if err != nil {
-		fmt.Println("Failed to created book", newBook)
-	}
-
-	fmt.Print("Buku berhasil di buat : ", newBook.Title)
+	bookService.Create(bookRequest)
 		
 	router := gin.Default()
 
