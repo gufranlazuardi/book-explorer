@@ -10,36 +10,36 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type booksHandler struct {
+type BooksHandler struct {
 	bookService book.Service
 }
 
-func NewBookHandler(bookService book.Service) *booksHandler {
-	return &booksHandler{bookService}
+func NewBookHandler(bookService book.Service) *BooksHandler {
+	return &BooksHandler{bookService}
 }
 
-func (handler *booksHandler) RootHandler(c *gin.Context) {
+func (handler *BooksHandler) RootHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"name":  "Gufran Lazuardi",
 		"title": "Principal Software Engineer",
 	})
 }
 
-func  (h *booksHandler) HelloHandlrer(c *gin.Context) {
+func  (h *BooksHandler) HelloHandlrer(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"name":  "Hello",
 		"title": "Selamat pagi",
 	})
 }
 
-func  (h *booksHandler) BooksHandler(c *gin.Context) {
+func  (h *BooksHandler) BooksHandler(c *gin.Context) {
 	id := c.Param("id")
 	title := c.Param("title")
 
 	c.JSON(http.StatusOK, gin.H{"id": id, "title": title})
 }
 
-func  (h *booksHandler) PriceHandler(c *gin.Context) {
+func  (h *BooksHandler) PriceHandler(c *gin.Context) {
 	price := c.Query("price")
 	title := c.Query("title")
 
@@ -47,13 +47,13 @@ func  (h *booksHandler) PriceHandler(c *gin.Context) {
 	// contoh http://localhost:8080/price?price=20000&amount=10
 }
 
-func  (h *booksHandler) QueryHandler(c *gin.Context) {
+func  (h *BooksHandler) QueryHandler(c *gin.Context) {
 	title := c.Query("title")
 
 	c.JSON(http.StatusOK, gin.H{"title": title})
 }
 
-func  (h *booksHandler) PostBooksHandler(c *gin.Context) {
+func  (h *BooksHandler) PostBooksHandler(c *gin.Context) {
 	var bookRequest book.BookRequest
 
 	// Use ShouldBindJSON instead of ShouldBindBodyWithJSON
