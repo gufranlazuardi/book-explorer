@@ -9,6 +9,7 @@ type Book struct {
 	Price       int
 	Rating      float32
 	Publisher   string
+	SubTitle 	string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
