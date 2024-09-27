@@ -20,7 +20,7 @@ func(s service) FindAll()([]Book, error) {
 	return books, err
 }
 
-func(s service) FindById(ID int)(Book, error) {
+func(s *service) FindById(ID int) (Book, error) {
 	books, err := s.repository.FindById(ID)
 	return books, err
 }

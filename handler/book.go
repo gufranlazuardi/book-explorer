@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"belajar-golang-gin-gorm/book"
 
@@ -31,6 +32,7 @@ func (h *BooksHandler) GetBooks(c *gin.Context){
 
 	for _, b := range books {
 		bookResponse := book.BookResponse{
+			ID: b.ID,
 			Title: b.Title,
 			Subtitle: b.SubTitle,
 			Description: b.Description,
@@ -47,6 +49,23 @@ func (h *BooksHandler) GetBooks(c *gin.Context){
 	})
 	
 }
+
+func (h *BooksHandler) GetBook(c *gin.Context)  {
+	id := c.Param("id")
+	newId, _ := strconv.Atoi(id)
+
+	books, err := h.bookService.FindById(int(newId))
+	if err!= nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data":books,
+	})
+} 
 
 func (h *BooksHandler) PostBooksHandler(c *gin.Context) {
 	var bookRequest book.BookRequest

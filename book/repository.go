@@ -26,11 +26,10 @@ func (r *repository)  FindAll() ([]Book, error) {
 	return books, err
 }
 
-func (r *repository)  FindById(ID int) (Book, error) {
+func (r *repository) FindById(ID int) (Book, error) {
 	var book Book
-
-	err := r.db.Find(&book).Error
-
+	err := r.db.Where("id = ?", ID).First(&book).Error
+	
 	return book, err
 }
 
