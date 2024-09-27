@@ -67,7 +67,7 @@ func (h *BooksHandler) GetBook(c *gin.Context)  {
 	})
 } 
 
-func (h *BooksHandler) PostBooksHandler(c *gin.Context) {
+func (h *BooksHandler) CreateBook(c *gin.Context) {
 	var bookRequest book.BookRequest
 
 	// Use ShouldBindJSON instead of ShouldBindBodyWithJSON
@@ -83,7 +83,6 @@ func (h *BooksHandler) PostBooksHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"errors": errorMessages,
 		})
-
 		return
 	}
 
@@ -92,7 +91,40 @@ func (h *BooksHandler) PostBooksHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"errors": err,
 		})
+	}
 
+	c.JSON(http.StatusOK, gin.H{
+		"data":     book,
+	})
+}
+
+func (h *BooksHandler) UpdateBook(c *gin.Context) {
+	var bookRequest book.BookRequest
+
+	// Use ShouldBindJSON instead of ShouldBindBodyWithJSON
+	err := c.ShouldBindJSON(&bookRequest)
+
+	if err != nil {
+		errorMessages := []string{}
+		for _, e := range err.(validator.ValidationErrors) {
+			errorMessage := fmt.Sprintf("Error in field %s, condition: %s", e.Field(), e.ActualTag())
+			errorMessages = append(errorMessages, errorMessage)
+		}
+
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": errorMessages,
+		})
+		return
+	}
+
+	newId := c.Param("id")
+	id, _ := strconv.Atoi(newId)
+
+	book, err := h.bookService.Update(id, bookRequest)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": err,
+		})
 	}
 
 	c.JSON(http.StatusOK, gin.H{

@@ -8,6 +8,7 @@ type Repository interface {
 	FindAll() ([]Book, error)
 	FindById(ID int) (Book, error)
 	Create(fieldBook Book) (Book, error)
+	Update(book Book) (Book, error)
 }
 
 type repository struct {
@@ -29,12 +30,18 @@ func (r *repository)  FindAll() ([]Book, error) {
 func (r *repository) FindById(ID int) (Book, error) {
 	var book Book
 	err := r.db.Where("id = ?", ID).First(&book).Error
-	
+
 	return book, err
 }
 
 func (r *repository)  Create(book Book) (Book, error) {
 	err := r.db.Create(&book).Error
 	
+	return book, err
+}
+
+func (r *repository) Update(book Book) (Book, error)  {
+	err := r.db.Save(&book).Error
+
 	return book, err
 }
