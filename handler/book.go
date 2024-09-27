@@ -18,42 +18,22 @@ func NewBookHandler(bookService book.Service) *BooksHandler {
 	return &BooksHandler{bookService}
 }
 
-func (handler *BooksHandler) RootHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"name":  "Gufran Lazuardi",
-		"title": "Principal Software Engineer",
+func (h *BooksHandler) GetBooks(c *gin.Context){
+	books, err := h.bookService.FindAll()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": err,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK,gin.H{
+		"data": books,
 	})
+	
 }
 
-func  (h *BooksHandler) HelloHandlrer(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"name":  "Hello",
-		"title": "Selamat pagi",
-	})
-}
-
-func  (h *BooksHandler) BooksHandler(c *gin.Context) {
-	id := c.Param("id")
-	title := c.Param("title")
-
-	c.JSON(http.StatusOK, gin.H{"id": id, "title": title})
-}
-
-func  (h *BooksHandler) PriceHandler(c *gin.Context) {
-	price := c.Query("price")
-	title := c.Query("title")
-
-	c.JSON(http.StatusOK, gin.H{"price": price, "amount": title})
-	// contoh http://localhost:8080/price?price=20000&amount=10
-}
-
-func  (h *BooksHandler) QueryHandler(c *gin.Context) {
-	title := c.Query("title")
-
-	c.JSON(http.StatusOK, gin.H{"title": title})
-}
-
-func  (h *BooksHandler) PostBooksHandler(c *gin.Context) {
+func (h *BooksHandler) PostBooksHandler(c *gin.Context) {
 	var bookRequest book.BookRequest
 
 	// Use ShouldBindJSON instead of ShouldBindBodyWithJSON
